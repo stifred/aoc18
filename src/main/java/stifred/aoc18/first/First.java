@@ -14,17 +14,10 @@ import java.util.stream.Collectors;
 public class First implements December {
   @Override
   public String firstChallenge(String input) {
-    List<FrequencyChange> changes =
-        Arrays.stream(input.split("\n"))
-            .map(SimpleFrequencyChange::fromString)
-            .collect(Collectors.toList());
-
-    Frequency frequency = new Frequency(0);
-    for (var frequencyChange : changes) {
-      frequency = frequency.apply(frequencyChange);
-    }
-
-    return frequency.toString();
+    return Arrays.stream(input.split("\n"))
+        .map(SimpleFrequencyChange::fromString)
+        .reduce(new Frequency(0), Frequency::apply, Frequency::apply)
+        .toString();
   }
 
   @Override

@@ -1,6 +1,6 @@
 package stifred.aoc18.first.a;
 
-public class Frequency {
+public class Frequency implements FrequencyChange {
   private final int value;
 
   public Frequency(int value) {
@@ -28,5 +28,10 @@ public class Frequency {
   @Override
   public String toString() {
     return Integer.toString(value);
+  }
+
+  @Override
+  public Frequency applyOn(Frequency frequency) {
+    return new Frequency(frequency.value() + this.value);
   }
 }
