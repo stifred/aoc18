@@ -1,18 +1,20 @@
 package stifred.aoc18;
 
 import stifred.aoc18.first.First;
+import stifred.aoc18.second.Second;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
-  private static final int dayOfMonth = 1; // LocalDate.now().getDayOfMonth();
+  private static final int dayOfMonth = LocalDate.now().getDayOfMonth();
 
-  private static final Map<Integer, December> map = Map.of(1, new First());
+  private static final Map<Integer, December> map = Map.of(1, new First(), 2, new Second());
 
   public static void main(String... args) {
     try {
