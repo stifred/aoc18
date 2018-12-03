@@ -20,6 +20,16 @@ public class Claim {
     return positions;
   }
 
+  public boolean containsOnlyPositionWithin(List<Position> checkPositions) {
+    for (Position position : positions) {
+      if (!checkPositions.contains(position)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   public static Claim from(String string) {
     String[] parts =
         string
