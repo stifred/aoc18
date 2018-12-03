@@ -2,6 +2,7 @@ package stifred.aoc18;
 
 import stifred.aoc18.first.First;
 import stifred.aoc18.second.Second;
+import stifred.aoc18.third.Third;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +15,8 @@ import java.util.stream.Collectors;
 public class Main {
   private static final int dayOfMonth = LocalDate.now().getDayOfMonth();
 
-  private static final Map<Integer, December> map = Map.of(1, new First(), 2, new Second());
+  private static final Map<Integer, December> map =
+      Map.of(1, new First(), 2, new Second(), 3, new Third());
 
   public static void main(String... args) {
     try {
