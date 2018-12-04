@@ -19,6 +19,30 @@ public class Fourth implements December {
             .sorted(Comparator.comparing(LogEntry::getTimestamp).thenComparing(LogEntry::type))
             .collect(Collectors.toList());
 
+    fixList(logs);
+
+    ShiftCounter shiftCounter = new ShiftCounter();
+    shiftCounter.countFor(logs);
+    int lazyId = shiftCounter.getSleepiestGuard();
+    int lazy = shiftCounter.findSleepiestMinute(lazyId, logs).product();
+
+    return Integer.toString(lazy);
+  }
+
+  @Override
+  public String secondChallenge(String input) {
+    List<LogEntry> logs =
+        Arrays.stream(input.split("\n"))
+            .map(LogEntry::fromString)
+            .sorted(Comparator.comparing(LogEntry::getTimestamp).thenComparing(LogEntry::type))
+            .collect(Collectors.toList());
+
+    fixList(logs);
+
+    return Integer.toString(new ShiftCounter().findMostFrequentlySleptThroughMinute(logs).product());
+  }
+
+  public static void fixList(List<LogEntry> logs) {
     int guardId = -1;
     for (var log : logs) {
       if (log.getGuardId() != -1) {
@@ -27,17 +51,5 @@ public class Fourth implements December {
         log.setGuardId(guardId);
       }
     }
-
-    ShiftCounter shiftCounter = new ShiftCounter();
-    shiftCounter.countFor(logs);
-    int lazyId = shiftCounter.getSleepiestGuard();
-    int lazyMinute = shiftCounter.findSleepiestMinute(lazyId, logs);
-
-    return Integer.toString(lazyId * lazyMinute);
-  }
-
-  @Override
-  public String secondChallenge(String input) {
-    return null;
   }
 }

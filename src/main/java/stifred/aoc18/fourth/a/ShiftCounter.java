@@ -1,11 +1,14 @@
 package stifred.aoc18.fourth.a;
 
+import stifred.aoc18.fourth.b.SleepyMinute;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ShiftCounter {
@@ -21,20 +24,24 @@ public class ShiftCounter {
         .orElse(-300);
   }
 
-  public int findSleepiestMinute(int guardId, List<LogEntry> logEntries) {
+  public SleepyMinute findSleepiestMinute(int guardId, List<LogEntry> logEntries) {
     var filtered =
         logEntries.stream().filter(l -> l.getGuardId() == guardId).collect(Collectors.toList());
 
     Map<Integer, Integer> minCounts = new HashMap<>();
     LocalDateTime time = null;
     for (var log : filtered) {
-      if (time == null) {
+      if (log.type() == 1) {
         time = log.getTimestamp();
-      } else {
+      } else if (log.type() == 2 && time != null) {
         int startMinute = time.getMinute();
         int endMinute = log.getTimestamp().getMinute();
 
-        for (var i = startMinute; i < endMinute; i++) {
+        if (startMinute > endMinute) {
+          continue;
+        }
+
+        for (int i = startMinute; i < endMinute; i++) {
           minCounts.put(i, minCounts.getOrDefault(i, 0) + 1);
         }
 
@@ -46,24 +53,36 @@ public class ShiftCounter {
         .entrySet()
         .stream()
         .max(Comparator.comparing(Map.Entry::getValue))
-        .map(Map.Entry::getValue)
-        .orElse(-1);
+        .map(e -> new SleepyMinute(guardId, e.getKey(), e.getValue()))
+        .orElse(null);
+  }
+
+  public SleepyMinute findMostFrequentlySleptThroughMinute(List<LogEntry> logEntries) {
+    SleepyMinute sm = new SleepyMinute();
+
+    Set<Integer> guardIds =
+        logEntries
+            .stream()
+            .map(LogEntry::getGuardId)
+            .collect(Collectors.toSet());
+
+    for (int guardId : guardIds) {
+      sm.updateIfBetter(findSleepiestMinute(guardId, logEntries));
+    }
+
+    return sm;
   }
 
   public void countFor(List<LogEntry> logEntries) {
-    int guardId = -1;
-    LocalDateTime time = null;
-
+    Map<Integer, LocalDateTime> times = new HashMap<>();
     for (LogEntry log : logEntries) {
-      if (log.getMessage().contains("falls")) {
-        guardId = log.getGuardId();
-        time = log.getTimestamp();
-      } else if (time != null) {
-        Duration period = Duration.between(time, log.getTimestamp());
-        counts.put(guardId, counts.getOrDefault(guardId, 0) + (int) period.toMinutes());
+      if (log.type() == 1) {
+        times.put(log.getGuardId(), log.getTimestamp());
+      } else if (log.type() == 2 && times.containsKey(log.getGuardId())) {
+        Duration period = Duration.between(times.get(log.getGuardId()), log.getTimestamp());
+        counts.put(log.getGuardId(), counts.getOrDefault(log.getGuardId(), 0) + (int) period.toMinutes());
 
-        time = null;
-        guardId = -1;
+        times.remove(log.getGuardId());
       }
     }
   }
