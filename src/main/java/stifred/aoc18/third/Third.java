@@ -17,12 +17,11 @@ public class Third implements December {
   public String firstChallenge(String input) {
     Set<Position> positions = new HashSet<>();
 
-    Set<String> overlaps =
+    Set<Position> overlaps =
         Arrays.stream(input.split("\n"))
             .map(Claim::from)
             .flatMap(claim -> claim.getPositions().stream())
             .filter(position -> !positions.add(position))
-            .map(Position::toString)
             .collect(Collectors.toSet());
 
     return Integer.toString(overlaps.size());
