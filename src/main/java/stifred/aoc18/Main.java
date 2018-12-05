@@ -17,25 +17,25 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
-  private static final int DAY_OF_MONTH = LocalDate.now().getDayOfMonth();
-
-  private static final Map<Integer, December> map =
+  private static final Map<Integer, December> MAP =
       Map.of(
           1, new KotlinFirst(), 2, new Second(), 3, new Third(), 4, new Fourth(), 5, new Fifth());
 
   public static void main(String... args) {
+    int dayOfMonth = LocalDate.now().getDayOfMonth();
+
     try {
       for (var suffix : List.of("a", "b")) {
-        String fileName = String.format("/input-%d%s.txt", DAY_OF_MONTH, suffix);
+        String fileName = String.format("/input-%d%s.txt", dayOfMonth, suffix);
         String input = readFile(fileName);
 
-        December dec = map.get(DAY_OF_MONTH);
+        December dec = MAP.get(dayOfMonth);
 
         Instant start = Instant.now();
         String output = "a".equals(suffix) ? dec.firstChallenge(input) : dec.secondChallenge(input);
         Duration duration = Duration.between(start, Instant.now());
 
-        System.out.printf("%d%s\n------\n", DAY_OF_MONTH, suffix);
+        System.out.printf("%d%s\n------\n", dayOfMonth, suffix);
         System.out.printf("%s\n------\n", output);
         System.out.printf("%s ms\n\n", duration.toMillis());
       }

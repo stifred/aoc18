@@ -2,8 +2,10 @@ package stifred.aoc18.fifth;
 
 import stifred.aoc18.December;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,13 +14,7 @@ public class Fifth implements December {
   public String firstChallenge(String input) {
     List<String> polymer = Arrays.asList(input.split(""));
 
-    int prevLength;
-    do {
-      prevLength = polymer.size();
-      polymer = splitPolymers(polymer);
-    } while (polymer.size() < prevLength);
-
-    return Integer.toString(polymer.size());
+    return Integer.toString(splitPolymers(polymer).size());
   }
 
   @Override
@@ -30,14 +26,9 @@ public class Fifth implements December {
     for (var badBoi : badBois) {
       List<String> testPolymer = removeFromPolymer(polymer, badBoi);
 
-      int prevLength;
-      do {
-        prevLength = testPolymer.size();
-        testPolymer = splitPolymers(testPolymer);
-      } while (testPolymer.size() < prevLength);
-
-      if (testPolymer.size() < record) {
-        record = testPolymer.size();
+      int newLength = splitPolymers(testPolymer).size();
+      if (newLength < record) {
+        record = newLength;
       }
     }
 
@@ -51,25 +42,21 @@ public class Fifth implements December {
         .collect(Collectors.toList());
   }
 
-  private List<String> splitPolymers(List<String> input) {
-    List<String> output = new ArrayList<>();
-    String prev = null;
+  private Deque<String> splitPolymers(List<String> input) {
+    Deque<String> output = new ArrayDeque<>(input.size());
 
     for (var chara : input) {
+      String prev = output.peekLast();
+
       if (prev != null) {
         if (chara.equalsIgnoreCase(prev) && !chara.equals(prev)) {
-          prev = null;
+          output.removeLast();
         } else {
-          output.add(prev);
-          prev = chara;
+          output.addLast(chara);
         }
       } else {
-        prev = chara;
+        output.addLast(chara);
       }
-    }
-
-    if (prev != null) {
-      output.add(prev);
     }
 
     return output;
