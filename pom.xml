@@ -51,7 +51,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.steyyan.scrivy.green.Application</mainClass>
+                            <mainClass>stifred.aoc18.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

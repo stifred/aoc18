@@ -3,7 +3,6 @@ package stifred.aoc18.fifth;
 import stifred.aoc18.December;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
@@ -12,19 +11,22 @@ import java.util.stream.Collectors;
 public class Fifth implements December {
   @Override
   public String firstChallenge(String input) {
-    List<String> polymer = Arrays.asList(input.split(""));
+    String[] polymer = input.split("");
 
     return Integer.toString(splitPolymers(polymer).size());
   }
 
   @Override
   public String secondChallenge(String input) {
-    List<String> polymer = Arrays.asList(input.split(""));
+    String[] polymer = input.split("");
     String[] badBois = "abcdefghijklmnopqrstuvwxyz".split("");
+
+    Deque<String> poly2 = splitPolymers(polymer);
+    String[] poly2arr = String.join("", poly2).split("");
 
     int record = 10000000;
     for (var badBoi : badBois) {
-      List<String> testPolymer = removeFromPolymer(polymer, badBoi);
+      String[] testPolymer = removeFromPolymer(poly2arr, badBoi);
 
       int newLength = splitPolymers(testPolymer).size();
       if (newLength < record) {
@@ -35,15 +37,15 @@ public class Fifth implements December {
     return Integer.toString(record);
   }
 
-  private List<String> removeFromPolymer(List<String> polymer, String badBoi) {
-    return polymer
-        .stream()
-        .filter(chara -> !chara.equalsIgnoreCase(badBoi))
-        .collect(Collectors.toList());
+  private String[] removeFromPolymer(String[] polymer, String badBoi) {
+    return Arrays.stream(polymer)
+            .filter(chara -> !chara.equalsIgnoreCase(badBoi))
+            .collect(Collectors.joining(""))
+            .split("");
   }
 
-  private Deque<String> splitPolymers(List<String> input) {
-    Deque<String> output = new ArrayDeque<>(input.size());
+  private Deque<String> splitPolymers(String[] input) {
+    Deque<String> output = new ArrayDeque<>(input.length);
 
     for (var chara : input) {
       String prev = output.peekLast();
