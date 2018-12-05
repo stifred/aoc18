@@ -16,4 +16,15 @@ public interface December {
    * @return the string output
    */
   String secondChallenge(String input);
+
+  /**
+   * Fetch a file name.
+   *
+   * @param day The day
+   * @param part (Ignored)
+   * @return file name.
+   */
+  default String fileName(int day, String part) {
+    return "/input-" + day + ".txt";
+  }
 }

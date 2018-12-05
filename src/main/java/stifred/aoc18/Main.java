@@ -26,10 +26,10 @@ public class Main {
 
     try {
       for (var suffix : List.of("a", "b")) {
-        String fileName = String.format("/input-%d%s.txt", dayOfMonth, suffix);
-        String input = readFile(fileName);
-
         December dec = MAP.get(dayOfMonth);
+
+        String fileName = dec.fileName(dayOfMonth, suffix);
+        String input = readFile(fileName);
 
         Instant start = Instant.now();
         String output = "a".equals(suffix) ? dec.firstChallenge(input) : dec.secondChallenge(input);
