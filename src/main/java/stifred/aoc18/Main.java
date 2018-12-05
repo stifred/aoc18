@@ -1,5 +1,6 @@
 package stifred.aoc18;
 
+import stifred.aoc18.fifth.Fifth;
 import stifred.aoc18.firstkt.KotlinFirst;
 import stifred.aoc18.fourth.Fourth;
 import stifred.aoc18.second.Second;
@@ -17,7 +18,8 @@ public class Main {
   private static final int dayOfMonth = LocalDate.now().getDayOfMonth();
 
   private static final Map<Integer, December> map =
-      Map.of(1, new KotlinFirst(), 2, new Second(), 3, new Third(), 4, new Fourth());
+      Map.of(
+          1, new KotlinFirst(), 2, new Second(), 3, new Third(), 4, new Fourth(), 5, new Fifth());
 
   public static void main(String... args) {
     try {
