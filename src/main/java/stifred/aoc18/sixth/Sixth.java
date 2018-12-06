@@ -57,9 +57,7 @@ public class Sixth implements December {
     int size = 0;
     for (int x = -goal; x < xMax; x++) {
       for (int y = -goal; y < yMax; y++) {
-        Point point = new Point(x, y);
-
-        if (point.findClosest(areaPoints, goal) != null) {
+        if (Point.checkDistanceSum(x, y, areaPoints, goal)) {
           size++;
         }
       }

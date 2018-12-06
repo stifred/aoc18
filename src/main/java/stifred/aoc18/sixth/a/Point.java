@@ -21,18 +21,12 @@ public class Point {
   }
 
   public Point findClosest(List<Point> others) {
-    return findClosest(others, -1);
-  }
-
-  public Point findClosest(List<Point> others, int maxSum) {
     Point closest = null;
     int lowestDistance = 10000000;
     boolean equal = false;
-    int total = 0;
 
     for (Point point : others) {
       int distance = findManhattanDistanceTo(point);
-      total += distance;
 
       if (distance == lowestDistance) {
         equal = true;
@@ -43,14 +37,29 @@ public class Point {
       }
     }
 
-    if (equal || (maxSum > 0 && total > maxSum)) {
+    if (equal) {
       return null;
     }
 
     return closest;
   }
 
+  public static boolean checkDistanceSum(int x, int y, List<Point> points, int maxSum) {
+    int total = 0;
+
+    for (Point point : points) {
+      int distance = findManhattanDistanceTo(x, y, point);
+      total += distance;
+    }
+
+    return total < maxSum;
+  }
+
   private int findManhattanDistanceTo(Point other) {
+    return findManhattanDistanceTo(x, y, other);
+  }
+
+  private static int findManhattanDistanceTo(int x, int y, Point other) {
     return Math.abs(x - other.x) + Math.abs(y - other.y);
   }
 
