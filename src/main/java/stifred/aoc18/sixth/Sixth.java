@@ -51,11 +51,11 @@ public class Sixth implements December {
         Arrays.stream(input.split("\n")).map(Point::from).collect(Collectors.toList());
 
     Point max = Point.max(areaPoints);
-    int xMax = max.getX() + goal;
-    int yMax = max.getY() + goal;
+    int xMax = max.getX();
+    int yMax = max.getY();
     int size = 0;
-    for (int x = -goal; x < xMax; x++) {
-      for (int y = -goal; y < yMax; y++) {
+    for (int x = 0; x < xMax; x++) {
+      for (int y = 0; y < yMax; y++) {
         if (Point.checkDistanceSum(x, y, areaPoints, goal)) {
           size++;
         }
