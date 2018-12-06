@@ -34,7 +34,7 @@ public class Main {
           new Sixth());
 
   public static void main(String... args) {
-    int dayOfMonth = 5;//LocalDate.now().getDayOfMonth();
+    int dayOfMonth = LocalDate.now().getDayOfMonth();
 
     try {
       for (var suffix : List.of("a", "b")) {
