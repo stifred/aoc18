@@ -4,6 +4,7 @@ import stifred.aoc18.fifth.Fifth;
 import stifred.aoc18.firstkt.KotlinFirst;
 import stifred.aoc18.fourth.Fourth;
 import stifred.aoc18.second.Second;
+import stifred.aoc18.sixth.Sixth;
 import stifred.aoc18.third.Third;
 
 import java.io.BufferedReader;
@@ -19,7 +20,18 @@ import java.util.stream.Collectors;
 public class Main {
   private static final Map<Integer, December> MAP =
       Map.of(
-          1, new KotlinFirst(), 2, new Second(), 3, new Third(), 4, new Fourth(), 5, new Fifth());
+          1,
+          new KotlinFirst(),
+          2,
+          new Second(),
+          3,
+          new Third(),
+          4,
+          new Fourth(),
+          5,
+          new Fifth(),
+          6,
+          new Sixth());
 
   public static void main(String... args) {
     int dayOfMonth = LocalDate.now().getDayOfMonth();
