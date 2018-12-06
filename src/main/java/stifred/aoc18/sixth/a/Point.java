@@ -48,8 +48,7 @@ public class Point {
     int total = 0;
 
     for (Point point : points) {
-      int distance = findManhattanDistanceTo(x, y, point);
-      total += distance;
+      total += findManhattanDistanceTo(x, y, point);
     }
 
     return total < maxSum;

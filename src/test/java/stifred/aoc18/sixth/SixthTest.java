@@ -1,7 +1,6 @@
 package stifred.aoc18.sixth;
 
 import org.junit.Test;
-import stifred.aoc18.December;
 
 import static org.junit.Assert.assertEquals;
 

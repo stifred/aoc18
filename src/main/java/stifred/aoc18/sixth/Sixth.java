@@ -14,9 +14,8 @@ public class Sixth implements December {
 
   @Override
   public String firstChallenge(String input) {
-    List<Point> areaPoints = Arrays.stream(input.split("\n"))
-        .map(Point::from)
-        .collect(Collectors.toList());
+    List<Point> areaPoints =
+        Arrays.stream(input.split("\n")).map(Point::from).collect(Collectors.toList());
 
     Point max = Point.max(areaPoints);
     int xMax = max.getX();
@@ -30,10 +29,11 @@ public class Sixth implements December {
 
     int maxSize = 0;
     for (Point areaPoint : areaPoints) {
-      List<Point> closest = allPoints
-          .stream()
-          .filter(p -> areaPoint.equals(p.findClosest(areaPoints)))
-          .collect(Collectors.toList());
+      List<Point> closest =
+          allPoints
+              .stream()
+              .filter(p -> areaPoint.equals(p.findClosest(areaPoints)))
+              .collect(Collectors.toList());
 
       Area area = new Area(areaPoint, max, closest);
 
@@ -47,9 +47,8 @@ public class Sixth implements December {
 
   @Override
   public String secondChallenge(String input) {
-    List<Point> areaPoints = Arrays.stream(input.split("\n"))
-        .map(Point::from)
-        .collect(Collectors.toList());
+    List<Point> areaPoints =
+        Arrays.stream(input.split("\n")).map(Point::from).collect(Collectors.toList());
 
     Point max = Point.max(areaPoints);
     int xMax = max.getX() + goal;
@@ -62,8 +61,6 @@ public class Sixth implements December {
         }
       }
     }
-
-
 
     return Integer.toString(size);
   }
