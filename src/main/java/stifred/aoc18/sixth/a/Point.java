@@ -43,7 +43,7 @@ public class Point {
       }
     }
 
-    if (equal || (maxSum > 0 && total > maxSum)) {
+    if ((maxSum <= 0 && equal) || (maxSum > 0 && total >= maxSum)) {
       return null;
     }
 
