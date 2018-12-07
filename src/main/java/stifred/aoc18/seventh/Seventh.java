@@ -46,10 +46,10 @@ public class Seventh implements December {
   public String secondChallenge(String input) {
     List<InstructionSet> sets = inputToSet(input);
 
-    int timePassed = -1;
+    int timePassed = 0;
     List<Work> works = new ArrayList<>();
     while (!sets.isEmpty()) {
-      timePassed++;
+      timePassed = works.stream().mapToInt(Work::getExpiresAt).min().orElse(timePassed);
 
       final int currentTime = timePassed;
       List<Work> finished =
