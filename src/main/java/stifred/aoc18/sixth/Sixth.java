@@ -54,11 +54,20 @@ public class Sixth implements December {
     int xMax = max.getX();
     int yMax = max.getY();
     int size = 0;
+    boolean foundStart = false;
     for (int x = 0; x < xMax; x++) {
+      boolean foundAny = false;
+
       for (int y = 0; y < yMax; y++) {
         if (Point.checkDistanceSum(x, y, areaPoints, goal)) {
           size++;
+          foundAny = true;
+          foundStart = true;
         }
+      }
+
+      if (!foundAny && foundStart) {
+        break;
       }
     }
 
