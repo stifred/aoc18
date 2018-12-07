@@ -2,6 +2,8 @@ package stifred.aoc18.seventh;
 
 import stifred.aoc18.December;
 import stifred.aoc18.seventh.a.Instruction;
+import stifred.aoc18.seventh.a.InstructionSet;
+import stifred.aoc18.seventh.b.Work;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +13,72 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Seventh implements December {
+  int offset = 60;
+  int workerCount = 5;
+
   @Override
   public String firstChallenge(String input) {
+    List<InstructionSet> sets = inputToSet(input);
+
+    List<String> steps = new ArrayList<>();
+    while (!sets.isEmpty()) {
+      InstructionSet found = null;
+
+      for (var iSet : sets) {
+        if (iSet.isReady()) {
+          found = iSet;
+          break;
+        }
+      }
+
+      if (found != null) {
+        String step = found.getTheStep();
+        steps.add(step);
+        sets.remove(found);
+        sets.forEach(iSet -> iSet.removeDependency(step));
+      }
+    }
+
+    return String.join("", steps);
+  }
+
+  @Override
+  public String secondChallenge(String input) {
+    List<InstructionSet> sets = inputToSet(input);
+
+    int timePassed = -1;
+    List<Work> works = new ArrayList<>();
+    while (!sets.isEmpty()) {
+      timePassed++;
+
+      final int currentTime = timePassed;
+      List<Work> finished =
+          works.stream().filter(w -> w.getExpiresAt() <= currentTime).collect(Collectors.toList());
+      for (Work done : finished) {
+        InstructionSet doneSet = done.getSet();
+        String step = doneSet.getTheStep();
+        sets.remove(doneSet);
+        sets.forEach(iSet -> iSet.removeDependency(step));
+      }
+      works.removeAll(finished);
+
+      if (works.size() < workerCount) {
+        for (var iSet : sets) {
+          if (iSet.isReady()) {
+            works.add(new Work(iSet.start(), timePassed, offset));
+
+            if (works.size() == workerCount) {
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    return Integer.toString(timePassed);
+  }
+
+  private List<InstructionSet> inputToSet(String input) {
     List<Instruction> instructions =
         Arrays.stream(input.split("\n")).map(Instruction::from).collect(Collectors.toList());
 
@@ -20,44 +86,18 @@ public class Seventh implements December {
     instructions.stream().map(Instruction::getRequired).forEach(letters::add);
     instructions.stream().map(Instruction::getTheStep).forEach(letters::add);
 
-    List<String> steps = new ArrayList<>();
-    List<Instruction> remaining = new ArrayList<>(instructions);
-    while (!remaining.isEmpty()) {
-      Set<String> requires =
-          remaining
-              .stream()
-              .map(Instruction::getRequired)
-              .filter(s -> !s.isEmpty())
-              .collect(Collectors.toSet());
-      Set<String> mySteps =
-          remaining.stream().map(Instruction::getTheStep).collect(Collectors.toSet());
+    List<InstructionSet> sets = new ArrayList<>();
+    for (String letter : letters) {
+      InstructionSet iSet = new InstructionSet(letter);
+      instructions
+          .stream()
+          .filter(i -> i.getTheStep().equals(letter))
+          .map(Instruction::getRequired)
+          .forEach(iSet::addDependency);
 
-      Set<String> available =
-          requires.stream().filter(step -> !mySteps.contains(step)).collect(Collectors.toSet());
-
-      boolean next = true;
-      for (var step : available) {
-        if (!next) {
-          break;
-        }
-        next = false;
-
-        steps.add(step);
-        remaining =
-            remaining
-                .stream()
-                .filter(s -> !s.getTheStep().equals(step))
-                .collect(Collectors.toList());
-      }
+      sets.add(iSet);
     }
 
-    letters.stream().filter(letter -> !steps.contains(letter)).forEach(steps::add);
-
-    return String.join("", steps);
-  }
-
-  @Override
-  public String secondChallenge(String input) {
-    return null;
+    return sets;
   }
 }
