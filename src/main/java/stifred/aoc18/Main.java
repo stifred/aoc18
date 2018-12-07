@@ -52,7 +52,7 @@ public class Main {
 
         System.out.printf("%d%s\n------\n", dayOfMonth, suffix);
         System.out.printf("%s\n------\n", output);
-        System.out.printf("%s ms\n\n", duration.toMillis());
+        System.out.printf("%s µs\n\n", (duration.toNanos() / 1000));
       }
     } catch (Exception e) {
       e.printStackTrace();
