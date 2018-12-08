@@ -52,15 +52,16 @@ public class Seventh implements December {
       timePassed = works.stream().mapToInt(Work::getExpiresAt).min().orElse(timePassed);
 
       final int currentTime = timePassed;
-      List<Work> finished =
-          works.stream().filter(w -> w.getExpiresAt() <= currentTime).collect(Collectors.toList());
-      for (Work done : finished) {
-        InstructionSet doneSet = done.getSet();
-        String step = doneSet.getTheStep();
-        sets.remove(doneSet);
-        sets.forEach(iSet -> iSet.removeDependency(step));
-      }
-      works.removeAll(finished);
+      works.stream().filter(w -> w.getExpiresAt() <= currentTime).collect(Collectors.toList())
+          .forEach(done -> {
+            {
+              InstructionSet doneSet = done.getSet();
+              String step = doneSet.getTheStep();
+              sets.remove(doneSet);
+              sets.forEach(iSet -> iSet.removeDependency(step));
+              works.remove(done);
+            }
+          });
 
       if (works.size() < workerCount) {
         for (var iSet : sets) {
