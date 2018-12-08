@@ -1,42 +1,42 @@
-package stifred.aoc18.eighth.a;
+package stifred.aoc18.eighth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node {
+class Node {
   private final List<Node> children = new ArrayList<>();
   private final List<Integer> metadata = new ArrayList<>();
   private final int childCount;
   private final int metaCount;
   private Node parent;
 
-  public Node(int childCount, int metaCount) {
+  Node(int childCount, int metaCount) {
     this.childCount = childCount;
     this.metaCount = metaCount;
   }
 
-  public Node parent() {
+  Node parent() {
     return parent;
   }
 
-  public boolean acceptsChild() {
+  boolean acceptsChild() {
     return children.size() < childCount;
   }
 
-  public boolean acceptsMeta() {
+  boolean acceptsMeta() {
     return metadata.size() < metaCount;
   }
 
-  public void addChild(Node child) {
+  void addChild(Node child) {
     child.parent = this;
     children.add(child);
   }
 
-  public void addMeta(int meta) {
+  void addMeta(int meta) {
     metadata.add(meta);
   }
 
-  public int metadataSum() {
+  int metadataSum() {
     int sum = 0;
     for (int metaValue : metadata) {
       sum += metaValue;

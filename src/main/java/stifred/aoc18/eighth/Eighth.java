@@ -1,7 +1,6 @@
 package stifred.aoc18.eighth;
 
 import stifred.aoc18.December;
-import stifred.aoc18.eighth.a.Node;
 
 import java.util.Arrays;
 import java.util.List;
