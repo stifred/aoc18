@@ -49,7 +49,7 @@ class Node {
     return sum;
   }
 
-  public int weirdMetadataSum() {
+  int weirdMetadataSum() {
     if (children.isEmpty()) {
       return metadataSum();
     }

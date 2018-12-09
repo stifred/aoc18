@@ -4,6 +4,7 @@ import stifred.aoc18.eighth.Eighth;
 import stifred.aoc18.fifth.Fifth;
 import stifred.aoc18.firstkt.KotlinFirst;
 import stifred.aoc18.fourth.Fourth;
+import stifred.aoc18.ninth.Ninth;
 import stifred.aoc18.second.Second;
 import stifred.aoc18.seventh.Seventh;
 import stifred.aoc18.sixth.Sixth;
@@ -16,46 +17,50 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
-  private static final Map<Integer, December> MAP =
-      Map.of(
-          1,
+  private static final List<December> SOLUTIONS =
+      List.of(
           new KotlinFirst(),
-          2,
           new Second(),
-          3,
           new Third(),
-          4,
           new Fourth(),
-          5,
           new Fifth(),
-          6,
           new Sixth(),
-          7,
           new Seventh(),
-          8,
-          new Eighth());
+          new Eighth(),
+          new Ninth());
 
   public static void main(String... args) {
     int dayOfMonth = LocalDate.now().getDayOfMonth();
+    int repetitions = 1;
 
     try {
       for (var suffix : List.of("a", "b")) {
-        December dec = MAP.get(dayOfMonth);
+        December dec = SOLUTIONS.get(dayOfMonth - 1);
 
         String fileName = dec.fileName(dayOfMonth, suffix);
         String input = readFile(fileName);
 
+        boolean isFirst = "a".equals(suffix);
+
         Instant start = Instant.now();
-        String output = "a".equals(suffix) ? dec.firstChallenge(input) : dec.secondChallenge(input);
+        String output = "";
+        if (isFirst) {
+          for (int i = 0; i < repetitions; i++) {
+            output = dec.firstChallenge(input);
+          }
+        } else {
+          for (int i = 0; i < repetitions; i++) {
+            output = dec.secondChallenge(input);
+          }
+        }
         Duration duration = Duration.between(start, Instant.now());
 
         System.out.printf("%d%s\n------\n", dayOfMonth, suffix);
         System.out.printf("%s\n------\n", output);
-        System.out.printf("%s µs\n\n", (duration.toNanos() / 1000));
+        System.out.printf("%s\n\n", renderDuration(duration, repetitions));
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -66,6 +71,16 @@ public class Main {
     try (var is =
         new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(fileName)))) {
       return is.lines().collect(Collectors.joining("\n"));
+    }
+  }
+
+  private static String renderDuration(Duration duration, int repetitions) {
+    if (duration.toMillis() > repetitions * 10_000) {
+      return (duration.toSeconds() / repetitions) + " s";
+    } else if (duration.toMillis() > repetitions * 50) {
+      return (duration.toMillis() / repetitions) + " ms";
+    } else {
+      return (duration.toNanos() / (repetitions * 1_000)) + " µs";
     }
   }
 }
