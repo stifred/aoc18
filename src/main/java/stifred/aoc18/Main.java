@@ -8,6 +8,7 @@ import stifred.aoc18.ninth.Ninth;
 import stifred.aoc18.second.Second;
 import stifred.aoc18.seventh.Seventh;
 import stifred.aoc18.sixth.Sixth;
+import stifred.aoc18.tenth.Tenth;
 import stifred.aoc18.third.Third;
 
 import java.io.BufferedReader;
@@ -30,7 +31,8 @@ public class Main {
           new Sixth(),
           new Seventh(),
           new Eighth(),
-          new Ninth());
+          new Ninth(),
+          new Tenth());
 
   public static void main(String... args) {
     int dayOfMonth = LocalDate.now().getDayOfMonth();

@@ -1,44 +1,40 @@
 package stifred.aoc18.ninth;
 
-import java.util.HashMap;
-import java.util.Map;
-
 class MarbleGame {
   private final int playerCount;
   private int lastMarble;
   private Marble currentMarble = new Marble(0);
 
   MarbleGame(int playerCount, int lastMarble) {
+    this(playerCount, lastMarble, 1);
+  }
+
+  MarbleGame(int playerCount, int lastMarble, int multiplier) {
     this.playerCount = playerCount;
-    this.lastMarble = lastMarble;
+    this.lastMarble = lastMarble * multiplier;
   }
 
   long play() {
-    return play(1);
-  }
+    Player first = new Player();
+    for (int i = 1; i < playerCount; i++) {
+      first.addNext();
+    }
 
-  long play(int multiplier) {
-    Map<Integer, Long> scores = new HashMap<>();
-
-    int playerIndex = 0;
-    lastMarble = multiplier * lastMarble;
+    Player currentPlayer = first;
     for (int currentMarble = 1; currentMarble <= lastMarble; currentMarble++) {
       int returned = insertMarble(currentMarble);
       if (returned > 0) {
-        scores.put(playerIndex, scores.getOrDefault(playerIndex, 0L) + returned);
+        currentPlayer.addScore(returned);
       }
 
-      playerIndex++;
-      if (playerIndex >= playerCount) {
-        playerIndex = 0;
-      }
+      currentPlayer = currentPlayer.next();
     }
 
-    return scores.entrySet().stream().mapToLong(Map.Entry::getValue).max().orElse(0L);
+    return currentPlayer.findMaxScore();
   }
 
   private int insertMarble(Integer newMarble) {
-    if (newMarble > 0 && newMarble % 23 == 0) {
+    if (newMarble % 23 == 0) {
       Marble otherMarble = currentMarble.left(7);
       currentMarble = otherMarble.right(1);
       return newMarble + otherMarble.pop();
