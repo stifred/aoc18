@@ -1,6 +1,7 @@
 package stifred.aoc18;
 
 import stifred.aoc18.eighth.Eighth;
+import stifred.aoc18.eleventh.Eleventh;
 import stifred.aoc18.fifth.Fifth;
 import stifred.aoc18.firstkt.KotlinFirst;
 import stifred.aoc18.fourth.Fourth;
@@ -32,7 +33,8 @@ public class Main {
           new Seventh(),
           new Eighth(),
           new Ninth(),
-          new Tenth());
+          new Tenth(),
+          new Eleventh());
 
   public static void main(String... args) {
     int dayOfMonth = LocalDate.now().getDayOfMonth();
