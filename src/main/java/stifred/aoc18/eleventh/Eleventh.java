@@ -20,10 +20,6 @@ public class Eleventh implements December {
   }
 
   private Matrix getOrMakeMatrix(int serial) {
-    if (matrix == null) {
-      matrix = new Matrix(serial, 300);
-    }
-
-    return matrix;
+    return new Matrix(serial, 300);
   }
 }
