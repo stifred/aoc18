@@ -1,6 +1,6 @@
 package stifred.aoc18.twelft;
 
-public class Prospect {
+class Prospect {
   private final boolean left2;
   private final boolean left1;
   private final boolean current;
@@ -8,7 +8,7 @@ public class Prospect {
   private final boolean right2;
   private final boolean next;
 
-  Prospect(
+  private Prospect(
       boolean left2, boolean left1, boolean current, boolean right1, boolean right2, boolean next) {
     this.left2 = left2;
     this.left1 = left1;

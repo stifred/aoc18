@@ -6,30 +6,61 @@ import java.util.List;
 class Plantation {
   private final List<Pot> pots;
   private final List<Prospect> prospects;
+  private Pot first;
 
   Plantation(List<Pot> pots, List<Prospect> prospects) {
     this.pots = pots;
     this.prospects = prospects;
+
+    first = pots.get(0);
   }
 
   long applyGenerations(int count) {
-    long sum = 0;
-
+    int sum = 0;
     for (int i = 0; i < count; i++) {
-      for (Pot pot : pots) {
-        for (Prospect prospect : prospects) {
-          pot.apply(prospect);
-        }
-      }
+      sum = 0;
 
-      sum += countPlants();
+      Pot current = null;
+
+      do {
+        if (current == null) {
+          current = first;
+        } else {
+          current = current.right();
+        }
+
+        boolean hasApplied = false;
+
+        for (Prospect prospect : prospects) {
+          if (current.apply(prospect)) {
+            hasApplied = true;
+            break;
+          }
+        }
+
+        if (!hasApplied) {
+          current.removePlant();
+        }
+      } while (current.hasRight());
+
+      current = null;
+      do {
+        if (current == null) {
+          current = first;
+        } else {
+          current = current.right();
+        }
+
+        current.commit();
+
+        if (current.hasPlant()) {
+          sum += current.index();
+        }
+
+      } while (current.hasRight());
     }
 
     return sum;
-  }
-
-  private long countPlants() {
-    return pots.stream().filter(Pot::hasPlant).count();
   }
 
   static Plantation from(String string) {
@@ -37,28 +68,30 @@ class Plantation {
     char[] potChars = lines[0].substring(15).toCharArray();
 
     List<Pot> pots = new ArrayList<>();
-    Pot last = null;
-    for (char ignored : potChars) {
-      Pot newPot = new Pot(false, last, null);
-      if (last != null) {
-        last.addRight(newPot);
-      }
+    int currentIndex = -potChars.length;
+    Pot last = new Pot(currentIndex - 1, false, null, null);
+    for (int i = 0; i < potChars.length; i++) {
+      Pot newPot = new Pot(currentIndex, false, last, null);
+      last.addRight(newPot);
       pots.add(newPot);
       last = newPot;
+      currentIndex++;
     }
 
     for (char potChar : potChars) {
-      Pot newPot = new Pot(potChar == '#', last, null);
+      Pot newPot = new Pot(currentIndex, potChar == '#', last, null);
       last.addRight(newPot);
       pots.add(newPot);
       last = newPot;
+      currentIndex++;
     }
 
-    for (char ignored : potChars) {
-      Pot newPot = new Pot(false, last, null);
+    for (int i = 0; i < potChars.length; i++) {
+      Pot newPot = new Pot(currentIndex, false, last, null);
       last.addRight(newPot);
       pots.add(newPot);
       last = newPot;
+      currentIndex++;
     }
 
     List<Prospect> prospects = new ArrayList<>();

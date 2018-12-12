@@ -10,6 +10,11 @@ public class Twelft implements December {
 
   @Override
   public String secondChallenge(String input) {
-    return null;
+    long sum = Plantation.from(input).applyGenerations(3000);
+    for (long i = 3000; i < 50_000_000_000L; i++) {
+      sum += 52;
+    }
+
+    return "" + sum;
   }
 }
