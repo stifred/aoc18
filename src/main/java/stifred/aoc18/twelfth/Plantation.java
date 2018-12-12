@@ -1,4 +1,4 @@
-package stifred.aoc18.twelft;
+package stifred.aoc18.twelfth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,12 @@ class Plantation {
     first = pots.get(0);
   }
 
-  long applyGenerations(int count) {
+  long applyGenerations(long count) {
     int sum = 0;
+
+    int prevSum = 0;
+    int currDiff = 0;
+    int prevDiff = 0;
     for (int i = 0; i < count; i++) {
       sum = 0;
 
@@ -58,6 +62,15 @@ class Plantation {
         }
 
       } while (current.hasRight());
+
+      currDiff = sum - prevSum;
+      prevSum = sum;
+
+      if (currDiff == prevDiff) {
+        return sum + ((count - i - 1) * prevDiff);
+      }
+
+      prevDiff = currDiff;
     }
 
     return sum;

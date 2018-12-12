@@ -1,8 +1,6 @@
-package stifred.aoc18.twelft;
+package stifred.aoc18.twelfth;
 
 import org.junit.Test;
-
-import java.io.PipedOutputStream;
 
 import static org.junit.Assert.*;
 

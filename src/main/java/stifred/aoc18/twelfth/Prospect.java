@@ -1,4 +1,4 @@
-package stifred.aoc18.twelft;
+package stifred.aoc18.twelfth;
 
 class Prospect {
   private final boolean left2;

@@ -1,11 +1,11 @@
-package stifred.aoc18.twelft;
+package stifred.aoc18.twelfth;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class TwelftTest {
-  private static final Twelft twelft = new Twelft();
+public class TwelfthTest {
+  private static final Twelfth twelft = new Twelfth();
 
   @Test
   public void testFirst() {
