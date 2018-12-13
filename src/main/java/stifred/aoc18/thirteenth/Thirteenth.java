@@ -5,7 +5,7 @@ import stifred.aoc18.December;
 public class Thirteenth implements December {
   @Override
   public String firstChallenge(String input) {
-    return null;
+    return "" + RailSet.fromString(input).findFirstCrash();
   }
 
   @Override

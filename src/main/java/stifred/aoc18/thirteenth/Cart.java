@@ -1,5 +1,9 @@
 package stifred.aoc18.thirteenth;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 class Cart {
   private int x;
   private int y;
@@ -42,8 +46,8 @@ class Cart {
   }
 
   void tick() {
-    x = x + direction.getDeltaX();
-    y = y + direction.getDeltaY();
+    x += direction.getDeltaX();
+    y += direction.getDeltaY();
   }
 
   Direction findNextChoice() {
@@ -60,5 +64,17 @@ class Cart {
     goLeft = true;
     goAhead = true;
     return direction.left();
+  }
+
+  static Point crash(List<Cart> carts) {
+    Set<Point> points = new HashSet<>();
+
+    for (var cart : carts) {
+      if (!points.add(new Point(cart.x, cart.y))) {
+        return new Point(cart.x, cart.y);
+      }
+    }
+
+    return null;
   }
 }

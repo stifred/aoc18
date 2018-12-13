@@ -3,8 +3,6 @@ package stifred.aoc18.thirteenth;
 import java.util.ArrayList;
 import java.util.List;
 
-import static stifred.aoc18.thirteenth.Direction.*;
-
 class RailSet {
   private final int width;
   private final List<Rail> rails;
@@ -17,7 +15,36 @@ class RailSet {
   }
 
   Rail railAt(int x, int y) {
+    if (x < 0 || x > width) {
+      return new Rail(x, y, this, ' ');
+    }
+    if (y < 0 || (y * width) + x >= rails.size()) {
+      return new Rail(x, y, this, ' ');
+    }
+
     return rails.get((y * width) + x);
+  }
+
+  Point findFirstCrash() {
+    int seconds = 0;
+    while (seconds < Integer.MAX_VALUE) {
+      Point crash = Cart.crash(carts);
+      if (crash != null) {
+        return crash;
+      }
+
+      seconds++;
+
+      for (var cart : carts) {
+        cart.adjustDirection();
+      }
+
+      for (var cart : carts) {
+        cart.tick();
+      }
+    }
+
+    return null;
   }
 
   static RailSet fromString(String input) {

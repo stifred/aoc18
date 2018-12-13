@@ -31,6 +31,10 @@ class Rail {
   }
 
   boolean canGo(Direction direction) {
+    if (chara == '+') {
+      return true;
+    }
+
     if (chara == '|' && (direction == UP || direction == DOWN)) {
       return true;
     }
@@ -43,17 +47,17 @@ class Rail {
     Rail up = go(UP);
     Rail right = go(RIGHT);
     Rail down = go(DOWN);
-    if (chara == '/' && up.chara == '|' && right.chara == '-') {
-      return direction == RIGHT || direction == UP;
+    if (chara == '/' && down.chara == '|' && right.chara == '-') {
+      return direction == DOWN || direction == RIGHT;
     }
-    if (chara == '/' && down.chara == '|' && left.chara == '-') {
-      return direction == DOWN || direction == LEFT;
-    }
-    if (chara == '\\' && up.chara == '|' && left.chara == '-') {
+    if (chara == '/' && up.chara == '|' && left.chara == '-') {
       return direction == UP || direction == LEFT;
     }
-    if (chara == '\\' && down.chara == '|' && right.chara == '-') {
-      return direction == DOWN || direction == RIGHT;
+    if (chara == '\\' && up.chara == '|' && right.chara == '-') {
+      return direction == UP || direction == RIGHT;
+    }
+    if (chara == '\\' && down.chara == '|' && left.chara == '-') {
+      return direction == DOWN || direction == LEFT;
     }
 
     return false;
