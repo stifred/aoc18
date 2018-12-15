@@ -43,7 +43,7 @@ public class Main {
           new Fourteenth());
 
   public static void main(String... args) {
-    int dayOfMonth = LocalDate.now().getDayOfMonth();
+    int dayOfMonth = 13;//LocalDate.now().getDayOfMonth();
     int repetitions = 1;
 
     try {

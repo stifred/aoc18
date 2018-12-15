@@ -10,6 +10,6 @@ public class Thirteenth implements December {
 
   @Override
   public String secondChallenge(String input) {
-    return null;
+    return "" + RailSet.fromString(input).findLastCartStanding();
   }
 }

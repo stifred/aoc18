@@ -1,37 +1,25 @@
 package stifred.aoc18.fourteenth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Recipe {
+  private static Recipe last;
   private final int score;
   private final Recipe first;
-  private final Recipe previous;
   private Recipe next;
 
   Recipe(int score) {
     this.score = score;
     this.first = this;
-    this.previous = null;
     this.next = null;
+    last = this;
   }
 
-  private Recipe(int score, Recipe first, Recipe previous, Recipe next) {
+  private Recipe(int score, Recipe first, Recipe next) {
     this.score = score;
     this.first = first;
-    this.previous = previous;
     this.next = next;
-  }
-
-  boolean isFirst() {
-    return previous == null;
-  }
-
-  boolean isLast() {
-    return next == null;
-  }
-
-  Recipe previous() {
-    return previous != null ? previous : first;
   }
 
   Recipe next() {
@@ -43,8 +31,9 @@ class Recipe {
   }
 
   Recipe addNext(int number) {
-    Recipe newRecipe = new Recipe(number, first, this, null);
+    Recipe newRecipe = new Recipe(number, first, null);
     this.next = newRecipe;
+    last = last.next;
     return newRecipe;
   }
 
@@ -52,49 +41,34 @@ class Recipe {
     return this.score;
   }
 
-  int length() {
-    Recipe current = first;
-    int count = 1;
-    while (!current.isLast()) {
-      count++;
-      current = current.next();
-    }
-    return count;
-  }
-
   int combineWith(Recipe other) {
     int sum = score + other.score();
-    String[] sumStr = Integer.toString(sum).split("");
-
-    Recipe last = this;
-    while (!last.isLast()) {
-      last = last.next();
-    }
 
     int count = 0;
-    for (String digit : sumStr) {
-      last.addNext(Integer.parseInt(digit));
-      last = last.next();
+    if (sum >= 10) {
+      last.addNext(1);
       count++;
     }
+
+    last.addNext(sum % 10);
+    count++;
+
     return count;
   }
 
-  String combineWithStr(Recipe other) {
+  List<Integer> combineWithList(Recipe other) {
     int sum = score + other.score();
-    String whole = Integer.toString(sum);
-    String[] sumStr = whole.split("");
 
-    Recipe last = this;
-    while (!last.isLast()) {
-      last = last.next();
+    List<Integer> output = new ArrayList<>();
+    if (sum >= 10) {
+      last.addNext(1);
+      output.add(1);
     }
 
-    for (String digit : sumStr) {
-      last.addNext(Integer.parseInt(digit));
-      last = last.next();
-    }
+    int digit = sum % 10;
+    last.addNext(digit);
+    output.add(digit);
 
-    return whole;
+    return output;
   }
 }

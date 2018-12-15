@@ -6,7 +6,7 @@ import java.util.List;
 class RailSet {
   private final int width;
   private final List<Rail> rails;
-  private final List<Cart> carts;
+  private List<Cart> carts;
 
   private RailSet(int width, List<Rail> rails, List<Cart> carts) {
     this.width = width;
@@ -42,9 +42,75 @@ class RailSet {
       for (var cart : carts) {
         cart.tick();
       }
+
+      // print();
     }
 
     return null;
+  }
+
+  Point findLastCartStanding() {
+    int seconds = 0;
+    while (seconds < Integer.MAX_VALUE) {
+
+      seconds++;
+
+      for (int i = 0; i < carts.size(); i++) {
+        if (i < 0) {
+          continue;
+        }
+
+        Cart cart = carts.get(i);
+
+        int currSize = carts.size();
+        carts = Cart.crash2(carts);
+        if (carts.size() < currSize) {
+          i += (carts.size() - currSize);
+
+          if (carts.size() == 1) {
+            Cart last = carts.get(0);
+            return new Point(last.x(), last.y());
+          }
+
+          continue;
+        }
+
+        cart.adjustDirection();
+        cart.tick();
+      }
+    }
+
+    return null;
+  }
+
+  private void print() {
+    int height = (rails.size() / width) + 1;
+    for (int i = 0; i < height; i++) {
+      StringBuilder builder = new StringBuilder();
+
+      for (int j = 0; j < width; j++) {
+        boolean hasCart = false;
+        String chara = " ";
+        for (Cart cart : carts) {
+          if (cart.x() == j && cart.y() == i) {
+            if (!hasCart) {
+              chara = cart.dir().value();
+              hasCart = true;
+            } else {
+              chara = "B";
+            }
+          }
+        }
+
+        if (hasCart) {
+          builder.append(chara);
+        } else {
+          builder.append(railAt(j, i).getChara());
+        }
+      }
+
+      System.out.println(builder.toString());
+    }
   }
 
   static RailSet fromString(String input) {

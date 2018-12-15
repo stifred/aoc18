@@ -2,7 +2,7 @@ package stifred.aoc18.fourteenth;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class FourteenthTest {
   private final Fourteenth fourteenth = new Fourteenth();

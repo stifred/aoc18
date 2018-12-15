@@ -20,4 +20,19 @@ public class ThirteenthTest {
 
     assertEquals(output, thirteenth.firstChallenge(input));
   }
+
+  @Test
+  public void testSecond() {
+    String input =
+        "/>-<\\  \n"
+            + "|   |  \n"
+            + "| /<+-\\\n"
+            + "| | | v\n"
+            + "\\>+</ |\n"
+            + "  |   ^\n"
+            + "  \\<->/";
+
+    String output = "6,4";
+    assertEquals(output, thirteenth.secondChallenge(input));
+  }
 }

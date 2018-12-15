@@ -1,7 +1,7 @@
 package stifred.aoc18.fourteenth;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 class ElvenWorkforce {
   private Recipe first;
@@ -44,13 +44,18 @@ class ElvenWorkforce {
   }
 
   String doOtherWork(String searchOf) {
-    StringBuilder str = new StringBuilder("37");
-    int index = -1;
-    do {
+    Matcher matcher =
+        new Matcher(
+            Arrays.stream(searchOf.split("")).map(Integer::parseInt).collect(Collectors.toList()));
+    int index = 2;
+    while (!matcher.hasMatch()) {
       int moveFirst = 1 + first.score();
       int moveSecond = 1 + second.score();
 
-      str.append(first.combineWithStr(second));
+      for (int next : first.combineWithList(second)) {
+        matcher.apply(index, next);
+        index++;
+      }
 
       for (int i = 0; i < moveFirst; i++) {
         first = first.next();
@@ -59,10 +64,8 @@ class ElvenWorkforce {
       for (int i = 0; i < moveSecond; i++) {
         second = second.next();
       }
+    }
 
-      index = str.indexOf(searchOf);
-    } while (index < 0);
-
-    return Integer.toString(index);
+    return Integer.toString(matcher.index());
   }
 }

@@ -15,19 +15,16 @@ class Rail {
     this.chara = chara;
   }
 
+  char getChara() {
+    return chara;
+  }
+
   Rail go(Direction direction) {
     return railSet.railAt(x + direction.getDeltaX(), y + direction.getDeltaY());
   }
 
   boolean isIntersection() {
-    int dirs = 0;
-    for (Direction direction : Direction.values()) {
-      if (canGo(direction)) {
-        dirs++;
-      }
-    }
-
-    return dirs > 2;
+    return chara == '+';
   }
 
   boolean canGo(Direction direction) {

@@ -39,6 +39,14 @@ enum Direction {
     return deltaY;
   }
 
+  boolean isHorizontal() {
+    return this == LEFT || this == RIGHT;
+  }
+
+  boolean isVertical() {
+    return this == UP || this == DOWN;
+  }
+
   Direction left() {
     switch (this) {
       case UP:
